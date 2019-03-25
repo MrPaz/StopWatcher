@@ -29,7 +29,7 @@ namespace StopWatcher
         {
             services.AddTransient(serviceProvider =>
             {
-                string connectionString = Configuration.GetConnectionString("ABCConnection");
+                string connectionString = Configuration.GetConnectionString("ABCconnection");
                 System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString);
                 return connection;
             });
