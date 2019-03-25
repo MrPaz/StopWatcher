@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "Plans";
+}
+
+<body class="alt-bg">
+    <h2 style="color:black" class="font">Plans</h2>
+    <div class="card">
+        <div style="color: black; font-size: larger; font-weight: bold;" class="card-header font">
+            Monthly
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">$30 per year.</h5>
+            <p class="card-text">Each monthly payment of $2.50 gives you access to StopWatcher for one month.</p>
+            <a asp-controller="cart" asp-action="index" class="btn btn-primary m-3 font">Buy Monthly Plan</a>
+        </div>
+    </div>
+    <br />
+    <div class="card">
+        <div style="color: black; font-size: larger; font-weight: 800;" class="card-header font">
+            Quarterly
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">$25 per year.</h5>
+            <p class="card-text">Each quarterly payment of $6.25 gives you access to StopWatcher for 3 months.</p>
+            <a asp-controller="cart" asp-action="index" class="btn btn-primary m-3 font">Buy Quarterly Plan</a>
+        </div>
+    </div>
+    <br />
+    <div class="card">
+        <div style="color: black; font-size: larger; font-weight: bold;" class="card-header font">
+            Yearly
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">$19.99 per year. Our best deal.</h5>
+            <p class="card-text">One payment of $19.99 gives you access to StopWatcher for one year.</p>
+            <a asp-controller="cart" asp-action="index" class="btn btn-primary m-3 font">Buy Yearly Plan</a>
+        </div>
+    </div>
+    <br />
+    <p style="color: black;">*All plans are recurring subsciptions. You may cancel your subscription in account settings at any time.  However, please note, any open trailing stop orders will be automatically cancelled when your subscription ends.</p>
+</body>

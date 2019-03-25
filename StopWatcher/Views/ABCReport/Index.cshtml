@@ -1,0 +1,17 @@
+﻿@model ABCReportModel
+@{
+    ViewData["Title"] = "ABC Report";
+}
+<h1>ABC Report</h1>
+<h2>Order #: @Model.OrderID</h2>
+<p>Date Ordered: @Model.DateOrdered.ToShortDateString()</p>
+@foreach (string phone in Model.PhoneNumbers)
+{
+    <p>@phone</p>
+}
+<ul>
+    @foreach (var lineItem in Model.LineItems)
+    {
+        <li>@lineItem.ProductCode</li>
+    }
+</ul>

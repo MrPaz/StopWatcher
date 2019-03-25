@@ -1,37 +1,99 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
-for details on configuring this project to bundle and minify static web assets. */
-body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿.alt-bg {
+    background-image: url('/images/home2.png');
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: -1;
+    background-origin:
+    /*filter: ;*/
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.font {
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+    font-weight: 800;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+.btn-pad{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    font-size:x-large;
+    border-radius: .75rem;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
+.home {
+    display: flex;
+    align-items: center;
+    height: 89.4vh;
+    width: 100%;
+    padding: 5rem;
+}
+
+.cover {
+    height: 700px;
+    background: url(http://lorempixel.com/1080/780/) no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.home-bg {
+    background-image: url('/images/home3.png');
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    /*background-repeat: no-repeat;*/
+    /*background-position: center 72px;*/
+    background-position: right top;
+    z-index: -1;
+    background-position-y: 75px;
+    /*background-attachment: fixed;*/
+}
+
+.home > * {
+    flex-basis: 50%;
+}
+
+/*.flex-fill {
+    flex: 1 1 auto;
+}*/
+
+.alt-footer {
+    position: absolute;
+}
+
+.home-footer {
+    position: relative;
+}
+
+.footer {
+    margin: 0;
+    padding: .25rem;
+    padding-left: 5%;
+    padding-right: 5%;
+    font-weight: 200;
+    background-color: #343a40;
+    bottom: 0;
     width: 100%;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+.nav-bar-mod{
+    margin: 0;
+    padding-left: 5%;
+    padding-right: 5%;
+    font-size: x-large;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+.navbar-inverse .navbar-nav > li > a{
+    color: aqua;
+}
+
+.navbar {
+    border-radius: 0;
+    margin-bottom: 0;
 }
