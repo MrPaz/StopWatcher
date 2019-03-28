@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StopWatcher.Data;
 
 namespace StopWatcher.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190325202639_TestMigration1")]
+    partial class TestMigration1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,100 +186,6 @@ namespace StopWatcher.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("StopWatcher.Data.Address", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AddressID");
-
-                    b.Property<string>("City");
-
-                    b.Property<string>("State");
-
-                    b.Property<string>("Street");
-
-                    b.Property<int>("UserID");
-
-                    b.Property<string>("ZipCode");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AddressID");
-
-                    b.ToTable("Address");
-                });
-
-            modelBuilder.Entity("StopWatcher.Data.CreditCard", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AddressID");
-
-                    b.Property<int>("CVC");
-
-                    b.Property<string>("CardIssuer");
-
-                    b.Property<int>("CardNumber");
-
-                    b.Property<int?>("CreditCardID");
-
-                    b.Property<int>("ExpirationMonth");
-
-                    b.Property<int>("ExpirationYear");
-
-                    b.Property<int>("UserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CreditCardID");
-
-                    b.ToTable("CreditCard");
-                });
-
-            modelBuilder.Entity("StopWatcher.Data.Exchange", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("APIKey");
-
-                    b.Property<int?>("ExchangeID");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("UserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ExchangeID");
-
-                    b.ToTable("Exchange");
-                });
-
-            modelBuilder.Entity("StopWatcher.Data.Plans", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Months");
-
-                    b.Property<int?>("PlansID");
-
-                    b.Property<decimal>("Price");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PlansID");
-
-                    b.ToTable("Plans");
-                });
-
             modelBuilder.Entity("StopWatcher.Data.Position", b =>
                 {
                     b.Property<int>("ID")
@@ -285,8 +193,6 @@ namespace StopWatcher.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Exchange");
-
-                    b.Property<bool>("IsStop");
 
                     b.Property<string>("Name");
 
@@ -298,77 +204,11 @@ namespace StopWatcher.Data.Migrations
 
                     b.Property<int>("UserID");
 
-                    b.Property<decimal>("WtdAvgBuyPriceBTC");
-
-                    b.Property<decimal>("WtdAvgBuyPriceUSD");
-
                     b.HasKey("ID");
 
                     b.HasIndex("PositionID");
 
-                    b.ToTable("Position");
-                });
-
-            modelBuilder.Entity("StopWatcher.Data.StopOrders", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("BidPxBTC");
-
-                    b.Property<decimal>("BidPxUSD");
-
-                    b.Property<string>("Exchange");
-
-                    b.Property<bool>("IsStop");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int?>("StopOrdersID");
-
-                    b.Property<string>("Ticker");
-
-                    b.Property<decimal>("Units");
-
-                    b.Property<int>("UserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("StopOrdersID");
-
-                    b.ToTable("StopOrders");
-                });
-
-            modelBuilder.Entity("StopWatcher.Data.User", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AddressID");
-
-                    b.Property<int>("CreditCardID");
-
-                    b.Property<string>("Email");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<DateTime>("PlanEndDate");
-
-                    b.Property<int>("PlanID");
-
-                    b.Property<DateTime>("PlanStartDate");
-
-                    b.Property<int?>("UserID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("User");
+                    b.ToTable("Positions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -416,53 +256,11 @@ namespace StopWatcher.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("StopWatcher.Data.Address", b =>
-                {
-                    b.HasOne("StopWatcher.Data.Address")
-                        .WithMany("_Address")
-                        .HasForeignKey("AddressID");
-                });
-
-            modelBuilder.Entity("StopWatcher.Data.CreditCard", b =>
-                {
-                    b.HasOne("StopWatcher.Data.CreditCard")
-                        .WithMany("_CreditCard")
-                        .HasForeignKey("CreditCardID");
-                });
-
-            modelBuilder.Entity("StopWatcher.Data.Exchange", b =>
-                {
-                    b.HasOne("StopWatcher.Data.Exchange")
-                        .WithMany("_Exchange")
-                        .HasForeignKey("ExchangeID");
-                });
-
-            modelBuilder.Entity("StopWatcher.Data.Plans", b =>
-                {
-                    b.HasOne("StopWatcher.Data.Plans")
-                        .WithMany("_Plans")
-                        .HasForeignKey("PlansID");
-                });
-
             modelBuilder.Entity("StopWatcher.Data.Position", b =>
                 {
                     b.HasOne("StopWatcher.Data.Position")
                         .WithMany("Positions")
                         .HasForeignKey("PositionID");
-                });
-
-            modelBuilder.Entity("StopWatcher.Data.StopOrders", b =>
-                {
-                    b.HasOne("StopWatcher.Data.StopOrders")
-                        .WithMany("_StopOrders")
-                        .HasForeignKey("StopOrdersID");
-                });
-
-            modelBuilder.Entity("StopWatcher.Data.User", b =>
-                {
-                    b.HasOne("StopWatcher.Data.User")
-                        .WithMany("_User")
-                        .HasForeignKey("UserID");
                 });
 #pragma warning restore 612, 618
         }

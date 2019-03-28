@@ -6,8 +6,6 @@
     background-repeat: no-repeat;
     position: relative;
     z-index: -1;
-    background-origin:
-    /*filter: ;*/
 }
 
 .font {
@@ -17,10 +15,7 @@
 }
 
 .btn-pad{
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding: 1rem;
     font-size:x-large;
     border-radius: .75rem;
 }
@@ -28,47 +23,43 @@
 .home {
     display: flex;
     align-items: center;
-    height: 89.4vh;
+    height: 94vh;
     width: 100%;
-    padding: 5rem;
 }
 
-.cover {
-    height: 700px;
-    background: url(http://lorempixel.com/1080/780/) no-repeat center center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+.alt-home {
+    align-items: center;
+    height: 84vh;
+    width: 100%;
+}
+
+
+body, html {
+    height: 100%;
 }
 
 .home-bg {
+    background-color: black;
     background-image: url('/images/home3.png');
     height: 100vh;
     width: 100%;
-    background-size: cover;
-    /*background-repeat: no-repeat;*/
-    /*background-position: center 72px;*/
-    background-position: right top;
+    /*background-size: cover;*/
+    background-repeat: no-repeat;
+    position: relative;
     z-index: -1;
-    background-position-y: 75px;
-    /*background-attachment: fixed;*/
+    background-position-y: 72px;
+    background-position-x: center;
+}
+
+@media only screen and (max-width: 1000px) {
+    body {
+        background-position: top right;
+    }
+
 }
 
 .home > * {
-    flex-basis: 50%;
-}
-
-/*.flex-fill {
-    flex: 1 1 auto;
-}*/
-
-.alt-footer {
-    position: absolute;
-}
-
-.home-footer {
-    position: relative;
+    flex-basis: 65%;
 }
 
 .footer {
@@ -78,7 +69,7 @@
     padding-right: 5%;
     font-weight: 200;
     background-color: #343a40;
-    bottom: 0;
+    /*bottom: 0;*/
     width: 100%;
 }
 

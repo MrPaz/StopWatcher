@@ -23,7 +23,6 @@ namespace StopWatcher.Models
     }
 }
 
-
 namespace StopWatcher.Controllers
 {
     public class ABCReportController : Controller
