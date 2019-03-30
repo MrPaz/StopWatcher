@@ -5,10 +5,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StopWatcher.Data;
 
+
 namespace StopWatcher.Controllers
 {
     public class PlansController : Controller
     {
+        private ApplicationDbContext _context;
+
+        //private UserManager<User> _userManager;
+
+        public PlansController(ApplicationDbContext context)
+        {
+            this._context = context;
+            //this._userManager = userManager;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -20,9 +31,15 @@ namespace StopWatcher.Controllers
         }
 
         [HttpPost]
-        public IActionResult Details()
+        public IActionResult Details(string button)
         {
-            //TODO: I need to add a bunch of other "logic" here to add the item to a cart
+            //if (button == "monthly")
+            //{
+            //    Cart cart = new Cart();
+            //    cart.PlansID = 1;
+            //    cart.UserID =   
+            //}
+
             return RedirectToAction("Index", "Cart");
         }
     }

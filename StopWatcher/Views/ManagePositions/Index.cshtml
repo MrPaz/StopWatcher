@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<StopWatcher.Data.Position>
+
 @{
     ViewData["Title"] = "ManagePositions";
     StopWatcher.Data.Security[] securities = ViewData["securities"] as StopWatcher.Data.Security[];
@@ -30,7 +31,7 @@
                             <td>@position.Units</td>
                             <td>@position.WtdAvgBuyPriceUSD</td>
                             <td>@position.WtdAvgBuyPriceBTC</td>
-                            <td>Y</td>
+                            <td>@(position.IsStop == false ? "N" : "Y")</td>
                             <td>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                                     View/Edit Stop
@@ -38,45 +39,6 @@
                             </td>
                         </tr>
                     }
-                    @*<tr>
-                        <th scope="row">BTC</th>
-                        <td>Bitcoin</td>
-                        <td>2.50000000</td>
-                        <td>3250.00</td>
-                        <td>-</td>
-                        <td>Y</td>
-                        <td>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                                View/Edit Stop
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">BAT</th>
-                        <td>Basic Attention Token</td>
-                        <td>5000</td>
-                        <td>0.01</td>
-                        <td>0.00004000</td>
-                        <td>Y</td>
-                        <td>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                                View/Edit Stop
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">XMR</th>
-                        <td>Monero</td>
-                        <td>152.3268754</td>
-                        <td>44.6547963</td>
-                        <td>0.01234567</td>
-                        <td>Y</td>
-                        <td>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                                View/Edit Stop
-                            </button>
-                        </td>
-                    </tr>*@
                 </tbody>
             </table>
         </div>
@@ -107,7 +69,7 @@
                         <form>
                             <div class="col">
                                 <label for="exchange">Exchange:  </label>
-                                <h5>Bittrex</h5>
+                                <h5></h5>
 
                                 <label for="ticker">Ticker:  </label>
                                 <h5>BTC</h5>
@@ -120,7 +82,7 @@
 
                                 <label for="stopLoss">Trailing Stop Loss %:  </label>
                                 <input type="text" placeholder="10" />
-
+                      
 
                                 @*<select name="ticker" class="form-control">
                                     @foreach (var position in Model._Positions)
@@ -129,6 +91,7 @@
                                     }
                                 </select>*@
                             </div>
+                    
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-primary" value="Set Stop" />
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -5,48 +5,12 @@ using System.Threading.Tasks;
 
 namespace StopWatcher.Data
 {
-    public class MockPositionData
+    public class MockExchangeData
     {
-
-        public static Position[] positions =
-        {
-            new Position
-            {
-                //ID = 1000,
-                UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
-                ExchangeID = 1,
-                SecurityID = 1,
-                Units = 2.5,
-                WtdAvgBuyPriceUSD = 3250.00,
-                WtdAvgBuyPriceBTC = 1.0,
-                IsStop = true,
-            },
-            new Position
-            {
-                //ID = 1001,
-                UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
-                ExchangeID = 1,
-                SecurityID = 2,
-                Units = 25,
-                WtdAvgBuyPriceUSD = 140.00,
-                WtdAvgBuyPriceBTC = 0.03000000,
-                IsStop = true,
-            },
-            new Position
-            {
-                //ID = 1002,
-                UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
-                ExchangeID = 1,
-                SecurityID = 3,
-                Units = 100,
-                WtdAvgBuyPriceUSD = 25.00,
-                WtdAvgBuyPriceBTC = .00080000,
-                IsStop = true,
-            }
-        };
-        public static Exchange[] Exchanges = {
+        public static Exchange[] exchanges = {
             new Exchange
             {
+                //ID =1,
                 UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
                 Name = "Bittrex",
                 ExchangeSecurities =
@@ -87,9 +51,49 @@ namespace StopWatcher.Data
             }
         };
     }
+    // postion data needs to be run after exchange is created, passed real exchange and security IDs that were created previously
+    public class MockPositionData
+    {
+        public static Position[] positions =
+        {
+            new Position
+            {
+                //ID = 1000,
+                UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
+                ExchangeID = 9,
+                SecurityID = 57,
+                Units = 2.5,
+                WtdAvgBuyPriceUSD = 3250.00,
+                WtdAvgBuyPriceBTC = 1.0,
+                IsStop = true,
+            },
+            new Position
+            {
+                //ID = 1001,
+                UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
+                ExchangeID = 9,
+                SecurityID = 58,
+                Units = 25,
+                WtdAvgBuyPriceUSD = 140.00,
+                WtdAvgBuyPriceBTC = 0.03000000,
+                IsStop = true,
+            },
+            new Position
+            {
+                //ID = 1002,
+                UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
+                ExchangeID = 9,
+                SecurityID = 59,
+                Units = 100,
+                WtdAvgBuyPriceUSD = 25.00,
+                WtdAvgBuyPriceBTC = .00080000,
+                IsStop = true,
+            }
+        };
+    }
     public class MockSecurityData
     {
-        public static Security[] security =
+        public static Security[] securities =
         {
             new Security
             {

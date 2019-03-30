@@ -21,17 +21,18 @@ namespace StopWatcher.Controllers
             this._context = context;
             this._userManager = userManager;
         }
+
         [Authorize]
         public IActionResult Index()
         {
-            //If my database's positions table is empty, add mock data here:
-            if (!_context.Positions.Any())
-            {
-                _context.Positions.AddRange(MockPositionData.positions);
-                //_context.Exchanges.AddRange(MockPositionData.Exchanges);
-                _context.Securities.AddRange(MockSecurityData.security);
-                _context.SaveChanges();
-            }
+            ////If my database's positions table is empty, add mock data here:
+            //if (!_context.Positions.Any())
+            //{
+            //    //_context.Exchanges.AddRange(MockExchangeData.exchanges);
+            //    _context.Positions.AddRange(MockPositionData.positions);
+            //    //_context.Securities.AddRange(MockSecurityData.securities);
+            //    _context.SaveChanges();
+            //}
 
             Data.User user = _userManager.FindByNameAsync(User.Identity.Name).Result;
             ViewData["securities"] = _context.Securities.Include(s => s.ExchangeSecurities).ThenInclude(es => es.Exchange).ToArray();

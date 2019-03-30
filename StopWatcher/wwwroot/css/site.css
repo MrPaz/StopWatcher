@@ -51,14 +51,15 @@
 
 .home {
     display: flex;
+    flex-basis: 65%;
     align-items: center;
     height: 94vh;
     width: 100%;
 }
 
-.home > * {
+/*.home > * {
     flex-basis: 65%;
-}
+}*/
 
 .home-bg {
     background-color: black;

@@ -10,9 +10,11 @@
             Monthly
         </div>
         <div class="card-body">
-            <h5 class="card-title">$30 per year.</h5>
-            <p class="card-text">Each monthly payment of $2.50 gives you access to StopWatcher for one month.</p>
-            <a asp-controller="cart" asp-action="index" class="btn btn-primary m-3 font">Buy Monthly Plan</a>
+            <h5 class="card-title">$29.99 per year.</h5>
+            <p class="card-text">Charged on a monthly basis.  Each monthly payment of $2.50 gives you access to StopWatcher for one month.</p>
+            <form>
+                <a value="monthly" asp-controller="cart" asp-action="index" class="btn btn-primary m-3 font">Buy Monthly Plan</a>
+            </form>
         </div>
     </div>
     <br />
@@ -21,9 +23,11 @@
             Quarterly
         </div>
         <div class="card-body">
-            <h5 class="card-title">$25 per year.</h5>
-            <p class="card-text">Each quarterly payment of $6.25 gives you access to StopWatcher for 3 months.</p>
-            <a asp-controller="cart" asp-action="index" class="btn btn-primary m-3 font">Buy Quarterly Plan</a>
+            <h5 class="card-title">$24.99 per year.</h5>
+            <p class="card-text">Charged on a quarterly basis.  Each quarterly payment of $6.25 gives you access to StopWatcher for 3 months.</p>
+            <form>
+                <a value="quarterly" asp-controller="cart" asp-action="index" class="btn btn-primary m-3 font">Buy Quarterly Plan</a>
+            </form>
         </div>
     </div>
     <br />
@@ -34,7 +38,9 @@
         <div class="card-body">
             <h5 class="card-title">$19.99 per year. Our best deal.</h5>
             <p class="card-text">One payment of $19.99 gives you access to StopWatcher for one year.</p>
-            <a asp-controller="cart" asp-action="index" class="btn btn-primary m-3 font">Buy Yearly Plan</a>
+            <form>
+                <a value="yearly" asp-controller="cart" asp-action="index" class="btn btn-primary m-3 font">Buy Yearly Plan</a>
+            </form>
         </div>
     </div>
     <br />
