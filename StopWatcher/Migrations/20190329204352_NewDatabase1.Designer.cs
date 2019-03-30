@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StopWatcher.Data;
 
-namespace StopWatcher.Data.Migrations
+namespace StopWatcher.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190329204352_NewDatabase1")]
+    partial class NewDatabase1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,57 +63,6 @@ namespace StopWatcher.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -206,36 +157,48 @@ namespace StopWatcher.Data.Migrations
 
                     b.HasIndex("AddressID");
 
-                    b.ToTable("Address");
+                    b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("StopWatcher.Data.CreditCard", b =>
+            modelBuilder.Entity("StopWatcher.Data.BTCPaymentAddresses", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AddressID");
+                    b.Property<string>("BTCAddress");
 
-                    b.Property<int>("CVC");
+                    b.Property<int?>("BTCPaymentAddressesID");
 
-                    b.Property<string>("CardIssuer");
+                    b.Property<Guid>("CartID");
 
-                    b.Property<int>("CardNumber");
-
-                    b.Property<int?>("CreditCardID");
-
-                    b.Property<int>("ExpirationMonth");
-
-                    b.Property<int>("ExpirationYear");
+                    b.Property<DateTime>("DateGenerated");
 
                     b.Property<int>("UserID");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CreditCardID");
+                    b.HasIndex("BTCPaymentAddressesID");
 
-                    b.ToTable("CreditCard");
+                    b.ToTable("BTCPaymentAddresses");
+                });
+
+            modelBuilder.Entity("StopWatcher.Data.Cart", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("CartID");
+
+                    b.Property<int>("PlansID");
+
+                    b.Property<int>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CartID");
+
+                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("StopWatcher.Data.Exchange", b =>
@@ -246,20 +209,60 @@ namespace StopWatcher.Data.Migrations
 
                     b.Property<string>("APIKey");
 
-                    b.Property<int?>("ExchangeID");
-
                     b.Property<string>("Name");
 
                     b.Property<int>("UserID");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ExchangeID");
-
-                    b.ToTable("Exchange");
+                    b.ToTable("Exchanges");
                 });
 
-            modelBuilder.Entity("StopWatcher.Data.Plans", b =>
+            modelBuilder.Entity("StopWatcher.Data.ExchangeSecurity", b =>
+                {
+                    b.Property<int>("ExchangeID");
+
+                    b.Property<int>("SecurityID");
+
+                    b.HasKey("ExchangeID", "SecurityID");
+
+                    b.HasIndex("SecurityID");
+
+                    b.ToTable("ExchangeSecurities");
+                });
+
+            modelBuilder.Entity("StopWatcher.Data.OpenOrder", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("BidPxBTC");
+
+                    b.Property<double>("BidPxUSD");
+
+                    b.Property<int>("ExchangeID");
+
+                    b.Property<bool>("IsStop");
+
+                    b.Property<int>("SecurityID");
+
+                    b.Property<decimal>("Units");
+
+                    b.Property<string>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ExchangeID");
+
+                    b.HasIndex("SecurityID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("OpenOrders");
+                });
+
+            modelBuilder.Entity("StopWatcher.Data.Plan", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -267,13 +270,9 @@ namespace StopWatcher.Data.Migrations
 
                     b.Property<int>("Months");
 
-                    b.Property<int?>("PlansID");
-
                     b.Property<decimal>("Price");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("PlansID");
 
                     b.ToTable("Plans");
                 });
@@ -284,91 +283,152 @@ namespace StopWatcher.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Exchange");
+                    b.Property<int>("ExchangeID");
 
                     b.Property<bool>("IsStop");
 
-                    b.Property<string>("Name");
+                    b.Property<int>("SecurityID");
 
-                    b.Property<int?>("PositionID");
+                    b.Property<double>("Units");
 
-                    b.Property<string>("Ticker");
+                    b.Property<string>("UserID");
 
-                    b.Property<decimal>("Units");
+                    b.Property<double>("WtdAvgBuyPriceBTC");
 
-                    b.Property<int>("UserID");
-
-                    b.Property<decimal>("WtdAvgBuyPriceBTC");
-
-                    b.Property<decimal>("WtdAvgBuyPriceUSD");
+                    b.Property<double>("WtdAvgBuyPriceUSD");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("PositionID");
+                    b.HasIndex("ExchangeID");
 
-                    b.ToTable("Position");
+                    b.HasIndex("SecurityID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Positions");
                 });
 
-            modelBuilder.Entity("StopWatcher.Data.StopOrders", b =>
+            modelBuilder.Entity("StopWatcher.Data.Security", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("BidPxBTC");
-
-                    b.Property<decimal>("BidPxUSD");
-
-                    b.Property<string>("Exchange");
-
-                    b.Property<bool>("IsStop");
-
                     b.Property<string>("Name");
 
-                    b.Property<int?>("StopOrdersID");
+                    b.Property<double>("PxBTC");
+
+                    b.Property<double>("PxUSD");
 
                     b.Property<string>("Ticker");
 
-                    b.Property<decimal>("Units");
-
-                    b.Property<int>("UserID");
+                    b.Property<string>("TradingPair");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("StopOrdersID");
+                    b.ToTable("Securities");
+                });
+
+            modelBuilder.Entity("StopWatcher.Data.StopOrder", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ExchangeID");
+
+                    b.Property<bool>("IsStop");
+
+                    b.Property<int>("SecurityID");
+
+                    b.Property<decimal>("StopPercent");
+
+                    b.Property<decimal>("StopPriceBTC");
+
+                    b.Property<decimal>("StopPriceUSD");
+
+                    b.Property<string>("TradingPair");
+
+                    b.Property<decimal>("Units");
+
+                    b.Property<string>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ExchangeID");
+
+                    b.HasIndex("SecurityID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("StopOrders");
                 });
 
             modelBuilder.Entity("StopWatcher.Data.User", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AddressID");
+                    b.Property<int>("AccessFailedCount");
 
-                    b.Property<int>("CreditCardID");
+                    b.Property<int?>("AddressID");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
+
                     b.Property<DateTime>("PlanEndDate");
 
-                    b.Property<int>("PlanID");
+                    b.Property<int?>("PlanID");
 
                     b.Property<DateTime>("PlanStartDate");
 
-                    b.Property<int?>("UserID");
+                    b.Property<string>("SecurityStamp");
 
-                    b.HasKey("ID");
+                    b.Property<bool>("TwoFactorEnabled");
 
-                    b.HasIndex("UserID");
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
 
-                    b.ToTable("User");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressID");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PlanID");
+
+                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -381,7 +441,7 @@ namespace StopWatcher.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("StopWatcher.Data.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -389,7 +449,7 @@ namespace StopWatcher.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("StopWatcher.Data.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -402,7 +462,7 @@ namespace StopWatcher.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("StopWatcher.Data.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -410,7 +470,7 @@ namespace StopWatcher.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
+                    b.HasOne("StopWatcher.Data.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -423,46 +483,93 @@ namespace StopWatcher.Data.Migrations
                         .HasForeignKey("AddressID");
                 });
 
-            modelBuilder.Entity("StopWatcher.Data.CreditCard", b =>
+            modelBuilder.Entity("StopWatcher.Data.BTCPaymentAddresses", b =>
                 {
-                    b.HasOne("StopWatcher.Data.CreditCard")
-                        .WithMany("_CreditCard")
-                        .HasForeignKey("CreditCardID");
+                    b.HasOne("StopWatcher.Data.BTCPaymentAddresses")
+                        .WithMany("_BTCPaymentAddresses")
+                        .HasForeignKey("BTCPaymentAddressesID");
                 });
 
-            modelBuilder.Entity("StopWatcher.Data.Exchange", b =>
+            modelBuilder.Entity("StopWatcher.Data.Cart", b =>
                 {
-                    b.HasOne("StopWatcher.Data.Exchange")
-                        .WithMany("_Exchange")
-                        .HasForeignKey("ExchangeID");
+                    b.HasOne("StopWatcher.Data.Cart")
+                        .WithMany("_Cart")
+                        .HasForeignKey("CartID");
                 });
 
-            modelBuilder.Entity("StopWatcher.Data.Plans", b =>
+            modelBuilder.Entity("StopWatcher.Data.ExchangeSecurity", b =>
                 {
-                    b.HasOne("StopWatcher.Data.Plans")
-                        .WithMany("_Plans")
-                        .HasForeignKey("PlansID");
+                    b.HasOne("StopWatcher.Data.Exchange", "Exchange")
+                        .WithMany("ExchangeSecurities")
+                        .HasForeignKey("ExchangeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("StopWatcher.Data.Security", "Security")
+                        .WithMany("ExchangeSecurities")
+                        .HasForeignKey("SecurityID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("StopWatcher.Data.OpenOrder", b =>
+                {
+                    b.HasOne("StopWatcher.Data.Exchange", "Exchange")
+                        .WithMany()
+                        .HasForeignKey("ExchangeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("StopWatcher.Data.Security", "Security")
+                        .WithMany()
+                        .HasForeignKey("SecurityID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("StopWatcher.Data.User", "User")
+                        .WithMany("OpenOrders")
+                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("StopWatcher.Data.Position", b =>
                 {
-                    b.HasOne("StopWatcher.Data.Position")
+                    b.HasOne("StopWatcher.Data.Exchange", "Exchange")
+                        .WithMany()
+                        .HasForeignKey("ExchangeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("StopWatcher.Data.Security", "Security")
+                        .WithMany()
+                        .HasForeignKey("SecurityID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("StopWatcher.Data.User", "User")
                         .WithMany("Positions")
-                        .HasForeignKey("PositionID");
+                        .HasForeignKey("UserID");
                 });
 
-            modelBuilder.Entity("StopWatcher.Data.StopOrders", b =>
+            modelBuilder.Entity("StopWatcher.Data.StopOrder", b =>
                 {
-                    b.HasOne("StopWatcher.Data.StopOrders")
-                        .WithMany("_StopOrders")
-                        .HasForeignKey("StopOrdersID");
+                    b.HasOne("StopWatcher.Data.Exchange", "Exchange")
+                        .WithMany()
+                        .HasForeignKey("ExchangeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("StopWatcher.Data.Security", "Security")
+                        .WithMany()
+                        .HasForeignKey("SecurityID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("StopWatcher.Data.User", "User")
+                        .WithMany("StopOrders")
+                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("StopWatcher.Data.User", b =>
                 {
-                    b.HasOne("StopWatcher.Data.User")
-                        .WithMany("_User")
-                        .HasForeignKey("UserID");
+                    b.HasOne("StopWatcher.Data.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressID");
+
+                    b.HasOne("StopWatcher.Data.Plan", "Plan")
+                        .WithMany()
+                        .HasForeignKey("PlanID");
                 });
 #pragma warning restore 612, 618
         }

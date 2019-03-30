@@ -9,17 +9,18 @@ namespace StopWatcher.Data
     {
         public Position()
         {
-            this.Positions = new HashSet<Position>();
+            
         }
         public int ID { get; internal set; }
-        public int UserID { get; set; }
-        public string Exchange { get; set; }
-        public string Name { get; set; }
-        public string Ticker { get; set; }
-        public decimal Units { get; set; }
-        public decimal WtdAvgBuyPriceUSD { get; set; }
-        public decimal WtdAvgBuyPriceBTC { get; set; }
+        public string UserID { get; set; }
+        public int ExchangeID { get; set; }
+        public int SecurityID { get; set; }
+        public double Units { get; set; }
+        public double WtdAvgBuyPriceUSD { get; set; }
+        public double WtdAvgBuyPriceBTC { get; set; }
         public bool IsStop { get; set; }
-        public ICollection<Position> Positions { get; set; }
+        public Exchange Exchange { get; set; }
+        public Security Security { get; set; }
+        public User User { get; set; }
     }
 }

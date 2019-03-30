@@ -1,14 +1,147 @@
-﻿
+﻿@model IEnumerable<StopWatcher.Data.Position>
 @{
     ViewData["Title"] = "ManagePositions";
+    StopWatcher.Data.Security[] securities = ViewData["securities"] as StopWatcher.Data.Security[];
+
 }
 
-<h2>ManagePositions</h2>
-<ul>
-    <li>Exchange</li>
-    <li>API Key</li>
-    <li>Positions</li>
-    <li>Open Orders</li>
-</ul>
+<body class="alt-bg img">
+    <div style="padding: 1rem;" class="alt-container">
+        <div style="vertical-align: middle;">
+            <h2 class="font">Manage Positions</h2>
+            <table class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Ticker</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Units</th>
+                        <th scope="col">Avg Buy Price (USD)</th>
+                        <th scope="col">Avg Buy Price (BTC)</th>
+                        <th scope="col">StopWatcher?</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var position in Model)
+                    {
+                        <tr>
+                            <th scope="row">@position.Security.Ticker</th>
+                            <td>@position.Security.Name</td>
+                            <td>@position.Units</td>
+                            <td>@position.WtdAvgBuyPriceUSD</td>
+                            <td>@position.WtdAvgBuyPriceBTC</td>
+                            <td>Y</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                                    View/Edit Stop
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    @*<tr>
+                        <th scope="row">BTC</th>
+                        <td>Bitcoin</td>
+                        <td>2.50000000</td>
+                        <td>3250.00</td>
+                        <td>-</td>
+                        <td>Y</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                                View/Edit Stop
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">BAT</th>
+                        <td>Basic Attention Token</td>
+                        <td>5000</td>
+                        <td>0.01</td>
+                        <td>0.00004000</td>
+                        <td>Y</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                                View/Edit Stop
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">XMR</th>
+                        <td>Monero</td>
+                        <td>152.3268754</td>
+                        <td>44.6547963</td>
+                        <td>0.01234567</td>
+                        <td>Y</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                                View/Edit Stop
+                            </button>
+                        </td>
+                    </tr>*@
+                </tbody>
+            </table>
+        </div>
+        @*@if (securities != null)
+        {
+            @foreach (var security in securities)
+            {
+                <p>@security.Name</p>
+            }
+        }*@
+        <a asp-controller="home" asp-action="index" class="btn btn-primary m-3">Back</a>
 
-<a asp-controller="home" asp-action="index" class="btn btn-primary m-3">Back</a>
+        @*Button trigger modal
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            Launch demo modal
+        </button>*@
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form>
+                            <div class="col">
+                                <label for="exchange">Exchange:  </label>
+                                <h5>Bittrex</h5>
+
+                                <label for="ticker">Ticker:  </label>
+                                <h5>BTC</h5>
+
+                                <label for="tradingPair">Trading Pair:  </label>
+                                <h5>BTC/USD</h5>
+
+                                <label for="units">Units:   </label>
+                                <h5>2.50000000</h5>
+
+                                <label for="stopLoss">Trailing Stop Loss %:  </label>
+                                <input type="text" placeholder="10" />
+
+
+                                @*<select name="ticker" class="form-control">
+                                    @foreach (var position in Model._Positions)
+                                    {
+                                        <option value="@c.ID">@position.Ticker</option>
+                                    }
+                                </select>*@
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary" value="Set Stop" />
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#myModal').on('shown.bs.modal', function () {
+                $('#myInput').trigger('focus')
+            })
+        </script>
+    </div>
+</body>

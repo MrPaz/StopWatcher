@@ -5,21 +5,21 @@ using System.Threading.Tasks;
 
 namespace StopWatcher.Data
 {
-    public class OpenOrders
+    public class OpenOrder
     {
-        public OpenOrders()
+        public OpenOrder()
         {
-            this._OpenOrders = new HashSet<OpenOrders>();
         }
-        public int ID { get; internal set; }
-        public int UserID { get; set; }
-        public string Exchange { get; set; }
-        public string Name { get; set; }
-        public string Ticker { get; set; }
+        public int ID { get; set; }
+        public string UserID { get; set; }
+        public int ExchangeID { get; set; }
+        public int SecurityID { get; set; }
         public decimal Units { get; set; }
-        public decimal BidPxUSD { get; set; }
-        public decimal BidPxBTC { get; set; }
+        public double BidPxUSD { get; set; }
+        public double BidPxBTC { get; set; }
         public bool IsStop { get; set; }
-        public ICollection<OpenOrders> _OpenOrders { get; set; }
+        public User User { get; set; }
+        public Exchange Exchange { get; set; }
+        public Security Security { get; set; }
     }
 }
