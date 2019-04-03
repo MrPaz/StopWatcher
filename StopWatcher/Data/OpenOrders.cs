@@ -14,7 +14,7 @@ namespace StopWatcher.Data
         public string UserID { get; set; }
         public int ExchangeID { get; set; }
         public int SecurityID { get; set; }
-        public decimal Units { get; set; }
+        public double Units { get; set; }
         public double BidPxUSD { get; set; }
         public double BidPxBTC { get; set; }
         public bool IsStop { get; set; }

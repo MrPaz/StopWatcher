@@ -1,0 +1,10 @@
+﻿@model StopWatcher.Models.GetTickerResponse
+@{
+    ViewData["Title"] = "Bittrex";
+}
+
+<h2>Bittrex</h2>
+<h3>Current BTC / TUSD Market:</h3>
+<h5>Bid: $@Model.Result.Bid</h5>
+<h5>Ask: $@Model.Result.Ask</h5>
+<h5>Last: $@Model.Result.Last</h5>

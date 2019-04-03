@@ -38,12 +38,56 @@ namespace StopWatcher.Controllers
             ViewData["securities"] = _context.Securities.Include(s => s.ExchangeSecurities).ThenInclude(es => es.Exchange).ToArray();
 
             //Instead of returning mock category data, return the DbContext's Categories property
-            return View(_context.Positions.Include(p => p.Security).Where(p => p.UserID == user.Id));
+            return View(_context
+                .Positions
+                .Include(p => p.Security)
+                .ThenInclude(x => x.ExchangeSecurities)
+                .ThenInclude(x => x.Exchange)
+                .Where(p => p.UserID == user.Id));
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+
+
+        [HttpPost]
+        public async Task<IActionResult> Index(int exchangeid, string tickerid, double stopLoss, double unitsid)
+        {
+            User user = await _userManager.GetUserAsync(User);
+            Security security = _context.Securities.First(x => x.Ticker == tickerid);
+
+            StopOrder stopOrder = _context.StopOrders.FirstOrDefault(x => x.UserID == user.Id && x.SecurityID == security.ID && x.ExchangeID == exchangeid);
+
+            if(stopOrder == null)
+            {
+                Position existingPosition = _context.Positions.FirstOrDefault(x => x.UserID == user.Id &&
+                x.SecurityID == security.ID && x.ExchangeID == exchangeid);
+                if (existingPosition == null)
+                {
+                    throw new ApplicationException(string.Format("User {0} doesn't have security {1}", user.Id, security.ID));
+                }
+                existingPosition.IsStop = true;
+
+                stopOrder = new StopOrder();
+                stopOrder.UserID = user.Id;
+                stopOrder.IsStop = true;
+                stopOrder.ExchangeID = exchangeid;
+                stopOrder.SecurityID = security.ID;
+                stopOrder.Units = unitsid;
+                stopOrder.TradingPair = security.TradingPair;
+                _context.StopOrders.Add(stopOrder);
+            }
+
+            stopOrder.StopPriceBTC = security.Ticker == "BTC" ? 1.0 : security.PxBTC * (1 - stopLoss / 100);
+            stopOrder.StopPriceUSD = security.PxUSD * (1 - stopLoss / 100);
+            stopOrder.StopPercent = stopLoss;
+            await _context.SaveChangesAsync();
+            //Security security = _context
+            //    .Exchanges
+            //    .Include(x => x.ExchangeSecurities)
+            //    .ThenInclude(x => x.Security)
+            //    .First(x => x.ID == exchangeid)
+            //    .ExchangeSecurities.First(x => x.Security.Ticker == tickerid)
+ 
+            return RedirectToAction("Index");
+        }
     }
 }

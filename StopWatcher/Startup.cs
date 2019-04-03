@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,7 +13,11 @@ using Microsoft.EntityFrameworkCore;
 using StopWatcher.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using StopWatcher.Services;
+using Microsoft.Extensions.Logging;
 
 namespace StopWatcher
 {
@@ -42,15 +47,47 @@ namespace StopWatcher
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddTransient((s) =>
+            {
+                return new FluentEmail.Mailgun.MailgunSender(Configuration.GetValue<string>("MailGun:Domain"), Configuration.GetValue<string>("MailGun:Key"));
+            });
+
+            services.AddTransient<SendGrid.ISendGridClient>((s) =>
+            {
+                return new SendGrid.SendGridClient(Configuration.GetValue<string>("SendGrid:Key"));
+            });
+
+            services.AddTransient<IEmailSender>((s) => {
+                return new EmailService(
+                s.GetService<FluentEmail.Mailgun.MailgunSender>(),
+                s.GetService<SendGrid.ISendGridClient>(),
+                s.GetService<ILogger<EmailService>>()
+                );
+            });
+
+            services.AddTransient<Braintree.IBraintreeGateway>((s) =>
+            {
+                return new Braintree.BraintreeGateway(
+                    Configuration.GetValue<string>("Braintree:Environment"),
+                    Configuration.GetValue<string>("Braintree:MerchantId"),
+                    Configuration.GetValue<string>("Braintree:PublicKey"),
+                    Configuration.GetValue<string>("Braintree:PrivateKey")
+                );
+            });
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<Data.User>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>();  
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            
+
+            //services.AddDefaultIdentity<User>((config) => { config.SignIn.RequireConfirmedEmail = true; })
+            //    .AddRoles<IdentityRole>()   //Turn on Role Support
+            //    .AddDefaultUI(UIFramework.Bootstrap4)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
