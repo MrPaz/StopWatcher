@@ -14,6 +14,7 @@ namespace StopWatcher.Data
         public string UserID { get; set; }
         public int ExchangeID { get; set; }
         public int SecurityID { get; set; }
+        public int? StopOrderID { get; set; }
         public double Units { get; set; }
         public double BidPxUSD { get; set; }
         public double BidPxBTC { get; set; }
@@ -21,5 +22,6 @@ namespace StopWatcher.Data
         public User User { get; set; }
         public Exchange Exchange { get; set; }
         public Security Security { get; set; }
+        public StopOrder StopOrder { get; set; }
     }
 }

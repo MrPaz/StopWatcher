@@ -15,9 +15,9 @@
                     <tr>
                         <th scope="col">Ticker</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Units</th>
-                        <th scope="col">Avg Buy Price (USD)</th>
-                        <th scope="col">Avg Buy Price (BTC)</th>
+                        <th style="text-align: right;" scope="col">Units</th>
+                        <th style="text-align: right;" scope="col">Avg Buy Price (USD)</th>
+                        <th style="text-align: right;" scope="col">Avg Buy Price (BTC)</th>
                         <th scope="col">StopWatcher?</th>
                         <th scope="col"></th>
                     </tr>
@@ -28,18 +28,19 @@
                         <tr>
                             <th scope="row">@position.Security.Ticker</th>
                             <td>@position.Security.Name</td>
-                            <td>@position.Units</td>
-                            <td>@position.WtdAvgBuyPriceUSD</td>
-                            <td>@position.WtdAvgBuyPriceBTC</td>
-                            <td>@(position.IsStop == false ? "N" : "Y")</td>
+                            <td style="text-align: right;">@position.Units.ToString("0.00000000")</td>
+                            <td style="text-align: right;">$ @position.WtdAvgBuyPriceUSD.ToString("0.00")</td>
+                            <td style="text-align: right;">&#8383 @position.WtdAvgBuyPriceBTC.ToString("0.00000000")</td>
+                            <td style="text-align: center;">@(position.IsStop == false ? "N" : "Y")</td>
                             <td>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" 
+                                        data-position-id="@position.ID"
                                         data-position-exchange="@position.ExchangeID"
+                                        data-position-exchange-name="@position.Exchange.Name"
                                         data-security-ticker="@position.Security.Ticker" 
                                         data-security-pair="@position.Security.TradingPair"
                                         data-position-units="@position.Units"
                                         data-position-stoploss="@position.IsStop"   
-                                        data-position-exchange-name="@position.Exchange.Name"
                                         onclick="setModalData(event, this) ">
                                     View/Edit Stop
                                 </button>
@@ -65,7 +66,7 @@
                         <form method="post">
                             <div class="col">
                                 <label>Exchange:  </label>
-                                <h5 id="exchange"></h5>
+                                <h5 id="exchange-name"></h5>
 
                                 <label>Ticker:  </label>
                                 <h5 id="ticker"></h5>
@@ -77,10 +78,11 @@
                                 <h5 id="units"></h5>
 
                                 <label>Trailing Stop Loss %:  </label>
-                                <input type="number" name="stopLoss" placeholder="10" min="0" max="100" />
+                                <input type="number" name="stoploss" id="stoploss" placeholder="10" min="0" max="100" />
                                 <input type="hidden" name="exchangeid" id="exchangeid" />
                                 <input type="hidden" name="tickerid" id="tickerid" />
                                 <input type="hidden" name="unitsid" id="unitsid" />
+                                <input type="hidden" name="positionid" id="positionid" />
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-primary" value="Set Stop" />
@@ -100,9 +102,10 @@
 @section scripts{
     <script>
         function setModalData(event, target) {
-            let exchange = target.attributes['data-position-exchange'].value;
-            document.querySelector("#exchange").innerText = exchange;
-            document.querySelector("#exchangeid").value = exchange;
+            let exchange = target.attributes['data-position-exchange-name'].value;
+            document.querySelector("#exchange-name").innerText = exchange;
+            let exchangeid = target.attributes['data-position-exchange'].value;
+            document.querySelector("#exchangeid").value = exchangeid;
             let ticker = target.attributes['data-security-ticker'].value;
             document.querySelector("#ticker").innerText = ticker;
             document.querySelector("#tickerid").value = ticker;
@@ -113,8 +116,8 @@
             document.querySelector("#unitsid").value = units;
             let stoploss = target.attributes['data-position-stoploss'].value;
             document.querySelector("#stoploss").innerText = stoploss;
+            let positionid = target.attributes['data-position-id'].value;
+            document.querySelector("#positionid").value = positionid;
         }
-
-
     </script>
 }

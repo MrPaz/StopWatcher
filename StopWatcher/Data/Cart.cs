@@ -12,9 +12,10 @@ namespace StopWatcher.Data
             this._Cart = new HashSet<Cart>();
         }
 
-        public Guid ID { get; set; }
-        public int UserID { get; set; }
+        public int ID { get; set; }
         public int PlansID { get; set; }
+        public int BTCPaymentAddressID { get; set; }
+        public Plan Plan { get; set; }
         public ICollection<Cart> _Cart { get; set; }
     }
 }

@@ -10,6 +10,10 @@
     <Compile Remove="Migrations\20190329174019_CreateIdentityUser.Designer.cs" />
     <Compile Remove="Migrations\20190329175540_CreateIdentityUser.cs" />
     <Compile Remove="Migrations\20190329175540_CreateIdentityUser.Designer.cs" />
+    <Compile Remove="Migrations\20190405192522_MarketData.cs" />
+    <Compile Remove="Migrations\20190405192522_MarketData.Designer.cs" />
+    <Compile Remove="Migrations\20190407012051_RetooledDB.cs" />
+    <Compile Remove="Migrations\20190407012051_RetooledDB.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +21,7 @@
     <PackageReference Include="FluentEmail.Mailgun" Version="2.5.3" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="2.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.7" PrivateAssets="All" />
     <PackageReference Include="Sendgrid" Version="9.10.0" />
   </ItemGroup>

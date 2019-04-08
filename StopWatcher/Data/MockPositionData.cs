@@ -11,43 +11,43 @@ namespace StopWatcher.Data
             new Exchange
             {
                 //ID =1,
-                UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
+                //UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
                 Name = "Bittrex",
-                ExchangeSecurities =
-                {
-                    new ExchangeSecurity{
-                        Security = new Security
-                        {
-                            Name = "Bitcoin",
-                            Ticker = "BTC",
-                            TradingPair = "BTC/USD",
-                            PxUSD = 4000.00,
-                            PxBTC = 1.0,
-                        }
-                    },
+                //ExchangeSecurities =
+                //{
+                //    new ExchangeSecurity{
+                //        Security = new Security
+                //        {
+                //            Name = "Bitcoin",
+                //            Ticker = "BTC",
+                //            TradingPair = "BTC/USD",
+                //            PxUSD = 4000.00,
+                //            PxBTC = 1.0,
+                //        }
+                //    },
 
-                    new ExchangeSecurity{
-                        Security = new Security
-                        {
-                            Name = "Ethereum",
-                            Ticker = "ETH",
-                            TradingPair = "ETH/USD",
-                            PxUSD = 135.00,
-                            PxBTC = .034,
-                        }
-                    },
+                //    new ExchangeSecurity{
+                //        Security = new Security
+                //        {
+                //            Name = "Ethereum",
+                //            Ticker = "ETH",
+                //            TradingPair = "ETH/USD",
+                //            PxUSD = 135.00,
+                //            PxBTC = .034,
+                //        }
+                //    },
 
-                    new ExchangeSecurity{
-                        Security = new Security
-                        {
-                            Name = "Litecoin",
-                            Ticker = "LTC",
-                            TradingPair = "LTC/USD",
-                            PxUSD = 61,
-                            PxBTC = .0145,
-                        }
-                    }
-                }
+                //    new ExchangeSecurity{
+                //        Security = new Security
+                //        {
+                //            Name = "Litecoin",
+                //            Ticker = "LTC",
+                //            TradingPair = "LTC/USD",
+                //            PxUSD = 61,
+                //            PxBTC = .0145,
+                //        }
+                //    }
+                //}
             }
         };
     }
@@ -59,9 +59,9 @@ namespace StopWatcher.Data
             new Position
             {
                 //ID = 1000,
-                UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
-                ExchangeID = 9,
-                SecurityID = 57,
+                //UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
+                ExchangeID = 2,
+                SecurityID = 4,
                 Units = 2.5,
                 WtdAvgBuyPriceUSD = 3250.00,
                 WtdAvgBuyPriceBTC = 1.0,
@@ -70,9 +70,9 @@ namespace StopWatcher.Data
             new Position
             {
                 //ID = 1001,
-                UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
-                ExchangeID = 9,
-                SecurityID = 58,
+                //UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
+                ExchangeID = 2,
+                SecurityID = 5,
                 Units = 25,
                 WtdAvgBuyPriceUSD = 140.00,
                 WtdAvgBuyPriceBTC = 0.03000000,
@@ -81,9 +81,9 @@ namespace StopWatcher.Data
             new Position
             {
                 //ID = 1002,
-                UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
-                ExchangeID = 9,
-                SecurityID = 59,
+                //UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
+                ExchangeID = 2,
+                SecurityID = 6,
                 Units = 100,
                 WtdAvgBuyPriceUSD = 25.00,
                 WtdAvgBuyPriceBTC = .00080000,
@@ -104,8 +104,7 @@ namespace StopWatcher.Data
                 PxUSD = 4000.00,
                 PxBTC = 1.0
             },
-
-        new Security
+            new Security
             {
                 //ID = 2,
                 Name = "Ethereum",

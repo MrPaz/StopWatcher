@@ -9,12 +9,13 @@ namespace StopWatcher.Data
     {
         public Exchange()
         {
-            this.ExchangeSecurities = new HashSet<ExchangeSecurity>();
+            //this.ExchangeSecurities = new HashSet<ExchangeSecurity>();
         }
         public int ID { get; set; }
-        public string UserID { get; set; }
+        public int MarketDataId { get; set; }
         public string Name { get; set; }
         public string APIKey { get; set; }
-        public ICollection<ExchangeSecurity> ExchangeSecurities { get; set; }
+        MarketData MarketData { get; set; }
+        //public ICollection<ExchangeSecurity> ExchangeSecurities { get; set; }
     }
 }

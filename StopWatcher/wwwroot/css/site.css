@@ -6,21 +6,22 @@
 }
 
 .alt-container {
-    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
     height: 88.25vh;
+    padding: 1rem;
 }
 
 .btn-pad {
     padding: 1rem;
-    font-size:x-large;
+    font-size: x-large;
     border-radius: .75rem;
 }
 
 .container {
     margin-left: auto;
     margin-right: auto;
-    padding-left: 5%;
-    padding-right: 5%;
+    padding: 1rem;
 }
 
 .flex-center {
@@ -50,10 +51,10 @@
 
 .home {
     display: flex;
-    flex-basis: 65%;
+    flex-basis: 70%;
     align-items: center;
-    height: 112vh;
-    width: 100vw;
+    height: 90vh;
+    /*width: 100vw;*/
 }
 
 .home-bg {
@@ -67,6 +68,10 @@
     background-position-y: 80px;
 }
 
+.home-container {
+    padding: 5%;
+}
+
 @media only screen and (max-width: 1000px) {
     body {
         background-position: top right;
@@ -78,11 +83,11 @@
     margin-bottom: 0;
 }
 
-.nav-bar-mod{
+.nav-bar-mod {
     margin: 0;
     padding-left: 5%;
     padding-right: 5%;
-    font-size: large;
+    font-size: larger;
 }
 
 /*.navbar-inverse .navbar-nav > li > a{

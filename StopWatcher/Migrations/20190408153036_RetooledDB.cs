@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace StopWatcher.Migrations
 {
-    public partial class NewDatabase1 : Migration
+    public partial class RetooledDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,6 @@ namespace StopWatcher.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserID = table.Column<int>(nullable: false),
                     Street = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
@@ -52,56 +51,44 @@ namespace StopWatcher.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserID = table.Column<int>(nullable: false),
                     BTCAddress = table.Column<string>(nullable: true),
                     DateGenerated = table.Column<DateTime>(nullable: false),
-                    CartID = table.Column<Guid>(nullable: false),
-                    BTCPaymentAddressesID = table.Column<int>(nullable: true)
+                    BTCPaymentAddressID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BTCPaymentAddresses", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_BTCPaymentAddresses_BTCPaymentAddresses_BTCPaymentAddressesID",
-                        column: x => x.BTCPaymentAddressesID,
+                        name: "FK_BTCPaymentAddresses_BTCPaymentAddresses_BTCPaymentAddressID",
+                        column: x => x.BTCPaymentAddressID,
                         principalTable: "BTCPaymentAddresses",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cart",
-                columns: table => new
-                {
-                    ID = table.Column<Guid>(nullable: false),
-                    UserID = table.Column<int>(nullable: false),
-                    PlansID = table.Column<int>(nullable: false),
-                    CartID = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cart", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Cart_Cart_CartID",
-                        column: x => x.CartID,
-                        principalTable: "Cart",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Exchanges",
+                name: "GetMarketSummaryResult",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserID = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    APIKey = table.Column<string>(nullable: true)
+                    MarketName = table.Column<string>(nullable: true),
+                    High = table.Column<float>(nullable: false),
+                    Low = table.Column<float>(nullable: false),
+                    Volume = table.Column<float>(nullable: false),
+                    Last = table.Column<float>(nullable: false),
+                    BaseVolume = table.Column<float>(nullable: false),
+                    TimeStamp = table.Column<DateTime>(nullable: false),
+                    Bid = table.Column<float>(nullable: false),
+                    Ask = table.Column<float>(nullable: false),
+                    OpenBuyOrders = table.Column<int>(nullable: false),
+                    OpenSellOrders = table.Column<int>(nullable: false),
+                    PrevDay = table.Column<float>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Exchanges", x => x.ID);
+                    table.PrimaryKey("PK_GetMarketSummaryResult", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,7 +97,7 @@ namespace StopWatcher.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Price = table.Column<decimal>(nullable: false),
+                    Price = table.Column<decimal>(type: "money", nullable: false),
                     Months = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -157,6 +144,53 @@ namespace StopWatcher.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MarketDatas",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MarketSummarriesID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MarketDatas", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_MarketDatas_GetMarketSummaryResult_MarketSummarriesID",
+                        column: x => x.MarketSummarriesID,
+                        principalTable: "GetMarketSummaryResult",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cart",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PlansID = table.Column<int>(nullable: false),
+                    BTCPaymentAddressID = table.Column<int>(nullable: false),
+                    PlanID = table.Column<int>(nullable: true),
+                    CartID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cart", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Cart_Cart_CartID",
+                        column: x => x.CartID,
+                        principalTable: "Cart",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Cart_Plans_PlanID",
+                        column: x => x.PlanID,
+                        principalTable: "Plans",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -179,8 +213,9 @@ namespace StopWatcher.Migrations
                     LastName = table.Column<string>(nullable: true),
                     AddressID = table.Column<int>(nullable: true),
                     PlanID = table.Column<int>(nullable: true),
-                    PlanStartDate = table.Column<DateTime>(nullable: false),
-                    PlanEndDate = table.Column<DateTime>(nullable: false)
+                    CartID = table.Column<int>(nullable: true),
+                    PlanStartDate = table.Column<DateTime>(nullable: true),
+                    PlanEndDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -192,35 +227,17 @@ namespace StopWatcher.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_AspNetUsers_Cart_CartID",
+                        column: x => x.CartID,
+                        principalTable: "Cart",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_AspNetUsers_Plans_PlanID",
                         column: x => x.PlanID,
                         principalTable: "Plans",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ExchangeSecurities",
-                columns: table => new
-                {
-                    ExchangeID = table.Column<int>(nullable: false),
-                    SecurityID = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ExchangeSecurities", x => new { x.ExchangeID, x.SecurityID });
-                    table.ForeignKey(
-                        name: "FK_ExchangeSecurities_Exchanges_ExchangeID",
-                        column: x => x.ExchangeID,
-                        principalTable: "Exchanges",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ExchangeSecurities_Securities_SecurityID",
-                        column: x => x.SecurityID,
-                        principalTable: "Securities",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -309,40 +326,49 @@ namespace StopWatcher.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OpenOrders",
+                name: "Exchanges",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserID = table.Column<string>(nullable: true),
-                    ExchangeID = table.Column<int>(nullable: false),
-                    SecurityID = table.Column<int>(nullable: false),
-                    Units = table.Column<decimal>(nullable: false),
-                    BidPxUSD = table.Column<double>(nullable: false),
-                    BidPxBTC = table.Column<double>(nullable: false),
-                    IsStop = table.Column<bool>(nullable: false)
+                    MarketDataId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    APIKey = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OpenOrders", x => x.ID);
+                    table.PrimaryKey("PK_Exchanges", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_OpenOrders_Exchanges_ExchangeID",
+                        name: "FK_Exchanges_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ExchangeSecurities",
+                columns: table => new
+                {
+                    ExchangeID = table.Column<int>(nullable: false),
+                    SecurityID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExchangeSecurities", x => new { x.ExchangeID, x.SecurityID });
+                    table.ForeignKey(
+                        name: "FK_ExchangeSecurities_Exchanges_ExchangeID",
                         column: x => x.ExchangeID,
                         principalTable: "Exchanges",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OpenOrders_Securities_SecurityID",
+                        name: "FK_ExchangeSecurities_Securities_SecurityID",
                         column: x => x.SecurityID,
                         principalTable: "Securities",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OpenOrders_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -388,33 +414,61 @@ namespace StopWatcher.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ExchangeID = table.Column<int>(nullable: false),
-                    SecurityID = table.Column<int>(nullable: false),
-                    Units = table.Column<decimal>(nullable: false),
-                    TradingPair = table.Column<string>(nullable: true),
-                    StopPriceUSD = table.Column<decimal>(nullable: false),
-                    StopPriceBTC = table.Column<decimal>(nullable: false),
-                    StopPercent = table.Column<decimal>(nullable: false),
-                    IsStop = table.Column<bool>(nullable: false),
-                    UserID = table.Column<string>(nullable: true)
+                    PositionID = table.Column<int>(nullable: true),
+                    Units = table.Column<double>(nullable: false),
+                    StopPriceUSD = table.Column<double>(nullable: false),
+                    StopPriceBTC = table.Column<double>(nullable: false),
+                    StopPercent = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StopOrders", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_StopOrders_Exchanges_ExchangeID",
+                        name: "FK_StopOrders_Positions_PositionID",
+                        column: x => x.PositionID,
+                        principalTable: "Positions",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OpenOrders",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserID = table.Column<string>(nullable: true),
+                    ExchangeID = table.Column<int>(nullable: false),
+                    SecurityID = table.Column<int>(nullable: false),
+                    StopOrderID = table.Column<int>(nullable: true),
+                    Units = table.Column<double>(nullable: false),
+                    BidPxUSD = table.Column<double>(nullable: false),
+                    BidPxBTC = table.Column<double>(nullable: false),
+                    IsStop = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OpenOrders", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_OpenOrders_Exchanges_ExchangeID",
                         column: x => x.ExchangeID,
                         principalTable: "Exchanges",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StopOrders_Securities_SecurityID",
+                        name: "FK_OpenOrders_Securities_SecurityID",
                         column: x => x.SecurityID,
                         principalTable: "Securities",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StopOrders_AspNetUsers_UserID",
+                        name: "FK_OpenOrders_StopOrders_StopOrderID",
+                        column: x => x.StopOrderID,
+                        principalTable: "StopOrders",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OpenOrders_AspNetUsers_UserID",
                         column: x => x.UserID,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -459,6 +513,11 @@ namespace StopWatcher.Migrations
                 column: "AddressID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_CartID",
+                table: "AspNetUsers",
+                column: "CartID");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -476,9 +535,9 @@ namespace StopWatcher.Migrations
                 column: "PlanID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BTCPaymentAddresses_BTCPaymentAddressesID",
+                name: "IX_BTCPaymentAddresses_BTCPaymentAddressID",
                 table: "BTCPaymentAddresses",
-                column: "BTCPaymentAddressesID");
+                column: "BTCPaymentAddressID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cart_CartID",
@@ -486,9 +545,24 @@ namespace StopWatcher.Migrations
                 column: "CartID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Cart_PlanID",
+                table: "Cart",
+                column: "PlanID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Exchanges_UserId",
+                table: "Exchanges",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ExchangeSecurities_SecurityID",
                 table: "ExchangeSecurities",
                 column: "SecurityID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MarketDatas_MarketSummarriesID",
+                table: "MarketDatas",
+                column: "MarketSummarriesID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpenOrders_ExchangeID",
@@ -499,6 +573,13 @@ namespace StopWatcher.Migrations
                 name: "IX_OpenOrders_SecurityID",
                 table: "OpenOrders",
                 column: "SecurityID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OpenOrders_StopOrderID",
+                table: "OpenOrders",
+                column: "StopOrderID",
+                unique: true,
+                filter: "[StopOrderID] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpenOrders_UserID",
@@ -521,19 +602,9 @@ namespace StopWatcher.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StopOrders_ExchangeID",
+                name: "IX_StopOrders_PositionID",
                 table: "StopOrders",
-                column: "ExchangeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StopOrders_SecurityID",
-                table: "StopOrders",
-                column: "SecurityID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StopOrders_UserID",
-                table: "StopOrders",
-                column: "UserID");
+                column: "PositionID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -557,22 +628,25 @@ namespace StopWatcher.Migrations
                 name: "BTCPaymentAddresses");
 
             migrationBuilder.DropTable(
-                name: "Cart");
+                name: "ExchangeSecurities");
 
             migrationBuilder.DropTable(
-                name: "ExchangeSecurities");
+                name: "MarketDatas");
 
             migrationBuilder.DropTable(
                 name: "OpenOrders");
 
             migrationBuilder.DropTable(
-                name: "Positions");
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "GetMarketSummaryResult");
 
             migrationBuilder.DropTable(
                 name: "StopOrders");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Positions");
 
             migrationBuilder.DropTable(
                 name: "Exchanges");
@@ -585,6 +659,9 @@ namespace StopWatcher.Migrations
 
             migrationBuilder.DropTable(
                 name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "Cart");
 
             migrationBuilder.DropTable(
                 name: "Plans");
