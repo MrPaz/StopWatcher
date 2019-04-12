@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using StopWatcher.Models;
 
 namespace StopWatcher.Data
 {
@@ -25,6 +26,7 @@ namespace StopWatcher.Data
         public DbSet<Security> Securities { get; set; }
         public DbSet<StopOrder> StopOrders { get; set; }
         public new DbSet<User> Users { get; set; } //why did i need new here?
+        public DbSet<GetMarketSummaryResult> GetMarketSummaryResults { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,9 +16,10 @@ namespace StopWatcher.Data
         public int ID { get; set; }
         public string Name { get; set; }
         public string Ticker { get; set; }
-        public string TradingPair { get; set; }
-        public double PxUSD { get; set; }
-        public double PxBTC { get; set; }
+        [Column(TypeName = "decimal(20, 8)")]
+        public decimal? PxUSD { get; set; }
+        [Column(TypeName = "decimal(20, 8)")]
+        public decimal PxBTC { get; set; }
         public ICollection<ExchangeSecurity> ExchangeSecurities { get; set; }
 
     }

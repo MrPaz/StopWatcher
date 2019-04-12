@@ -24,16 +24,6 @@ namespace StopWatcher
                 var optionsBuilder = new DbContextOptionsBuilder<Data.ApplicationDbContext>();
                 optionsBuilder.UseSqlServer(connectionString);
                 Data.ApplicationDbContext applicationDbContext = new Data.ApplicationDbContext(optionsBuilder.Options);
-
-                ////If my database's categories table is empty, add mock data here:
-                //if (!applicationDbContext.Positions.Any())
-                //{
-                //    applicationDbContext.Exchanges.AddRange(Data.MockExchangeData.exchanges);
-                //    applicationDbContext.Positions.AddRange(Data.MockPositionData.positions);
-                //    applicationDbContext.Securities.AddRange(Data.MockSecurityData.securities);
-
-                //    applicationDbContext.SaveChanges();
-                //}
             }
             else
             {

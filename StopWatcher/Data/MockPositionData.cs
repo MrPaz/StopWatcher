@@ -62,9 +62,9 @@ namespace StopWatcher.Data
                 //UserID = "6d83469d-b2d8-46a4-acbc-3ab86b4f890f",
                 ExchangeID = 2,
                 SecurityID = 4,
-                Units = 2.5,
-                WtdAvgBuyPriceUSD = 3250.00,
-                WtdAvgBuyPriceBTC = 1.0,
+                Units = (decimal)2.5,
+                WtdAvgBuyPriceUSD = (decimal)3250.00,
+                WtdAvgBuyPriceBTC = (decimal)1.0,
                 IsStop = true,
             },
             new Position
@@ -74,8 +74,8 @@ namespace StopWatcher.Data
                 ExchangeID = 2,
                 SecurityID = 5,
                 Units = 25,
-                WtdAvgBuyPriceUSD = 140.00,
-                WtdAvgBuyPriceBTC = 0.03000000,
+                WtdAvgBuyPriceUSD = (decimal)140.00,
+                WtdAvgBuyPriceBTC = (decimal)0.03000000,
                 IsStop = true,
             },
             new Position
@@ -85,8 +85,8 @@ namespace StopWatcher.Data
                 ExchangeID = 2,
                 SecurityID = 6,
                 Units = 100,
-                WtdAvgBuyPriceUSD = 25.00,
-                WtdAvgBuyPriceBTC = .00080000,
+                WtdAvgBuyPriceUSD = (decimal)25.00,
+                WtdAvgBuyPriceBTC = (decimal).00080000,
                 IsStop = true,
             }
         };
@@ -100,27 +100,27 @@ namespace StopWatcher.Data
                 //ID = 1,
                 Name = "Bitcoin",
                 Ticker = "BTC",
-                TradingPair = "BTC/USD",
-                PxUSD = 4000.00,
-                PxBTC = 1.0
+                //TradingPair = "BTC/USD",
+                PxUSD = (decimal)4000.00,
+                PxBTC = (decimal)1.0
             },
             new Security
             {
                 //ID = 2,
                 Name = "Ethereum",
                 Ticker = "ETH",
-                TradingPair = "ETH/USD",
-                PxUSD = 138.00,
-                PxBTC = .03500000
+                //TradingPair = "ETH/USD",
+                PxUSD = (decimal)138.00,
+                PxBTC = (decimal).03500000
             },
             new Security
             {
                 //ID = 3,
                 Name = "Litecoin",
                 Ticker = "LTC",
-                TradingPair = "LTC/USD",
-                PxUSD = 55.00,
-                PxBTC = .01000000
+                //TradingPair = "LTC/USD",
+                PxUSD = (decimal)55.00,
+                PxBTC = (decimal).01000000
             }
         };
     }

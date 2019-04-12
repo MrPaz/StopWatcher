@@ -14,9 +14,14 @@
     <Compile Remove="Migrations\20190405192522_MarketData.Designer.cs" />
     <Compile Remove="Migrations\20190407012051_RetooledDB.cs" />
     <Compile Remove="Migrations\20190407012051_RetooledDB.Designer.cs" />
+    <Compile Remove="Migrations\20190409201056_BittrexPackage.cs" />
+    <Compile Remove="Migrations\20190409201056_BittrexPackage.Designer.cs" />
+    <Compile Remove="Migrations\20190411175257_Decimals.cs" />
+    <Compile Remove="Migrations\20190411175257_Decimals.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bittrex.Net" Version="3.0.9" />
     <PackageReference Include="Braintree" Version="4.10.1" />
     <PackageReference Include="FluentEmail.Mailgun" Version="2.5.3" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -27,6 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Identity\Data\" />
+    <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Views\Bittrex\" />
   </ItemGroup>
 

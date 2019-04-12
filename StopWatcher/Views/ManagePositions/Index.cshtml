@@ -37,8 +37,7 @@
                                         data-position-id="@position.ID"
                                         data-position-exchange="@position.ExchangeID"
                                         data-position-exchange-name="@position.Exchange.Name"
-                                        data-security-ticker="@position.Security.Ticker" 
-                                        data-security-pair="@position.Security.TradingPair"
+                                        data-security-ticker="@position.Security.Ticker"
                                         data-position-units="@position.Units"
                                         data-position-stoploss="@position.IsStop"   
                                         onclick="setModalData(event, this) ">
@@ -109,8 +108,8 @@
             let ticker = target.attributes['data-security-ticker'].value;
             document.querySelector("#ticker").innerText = ticker;
             document.querySelector("#tickerid").value = ticker;
-            let tradingpair = target.attributes['data-security-pair'].value;
-            document.querySelector("#tradingpair").innerText = tradingpair;
+            //let tradingpair = target.attributes['data-security-pair'].value;
+            //document.querySelector("#tradingpair").innerText = tradingpair;
             let units = target.attributes['data-position-units'].value;
             document.querySelector("#units").innerText = units;
             document.querySelector("#unitsid").value = units;

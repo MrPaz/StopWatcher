@@ -14,6 +14,8 @@ namespace StopWatcher.Data
         }
 
         public int ID { get; set; }
+        public int ExchangeID { get; set; }
+        public Exchange Exchange { get; set; }
         public GetMarketSummaryResult MarketSummarries { get; set; }
         //public string MarketName { get; set; }
         //public float High { get; set; }

@@ -238,9 +238,15 @@ namespace StopWatcher.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ExchangeID");
+
+                    b.Property<int?>("ExchangeID1");
+
                     b.Property<int?>("MarketSummarriesID");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ExchangeID1");
 
                     b.HasIndex("MarketSummarriesID");
 
@@ -253,19 +259,28 @@ namespace StopWatcher.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("BidPxBTC");
-
-                    b.Property<double>("BidPxUSD");
-
                     b.Property<int>("ExchangeID");
 
                     b.Property<bool>("IsStop");
+
+                    b.Property<decimal?>("OrderPx")
+                        .HasColumnType("decimal(20, 8)");
+
+                    b.Property<int>("OrderType");
+
+                    b.Property<Guid?>("OrderUuid");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(20, 8)");
+
+                    b.Property<decimal>("QuantityRemaining")
+                        .HasColumnType("decimal(20, 8)");
 
                     b.Property<int>("SecurityID");
 
                     b.Property<int?>("StopOrderID");
 
-                    b.Property<double>("Units");
+                    b.Property<string>("TradingPair");
 
                     b.Property<string>("UserID");
 
@@ -312,13 +327,15 @@ namespace StopWatcher.Migrations
 
                     b.Property<int>("SecurityID");
 
-                    b.Property<double>("Units");
+                    b.Property<decimal>("Units");
 
                     b.Property<string>("UserID");
 
-                    b.Property<double>("WtdAvgBuyPriceBTC");
+                    b.Property<decimal>("WtdAvgBuyPriceBTC")
+                        .HasColumnType("decimal(20, 8)");
 
-                    b.Property<double>("WtdAvgBuyPriceUSD");
+                    b.Property<decimal>("WtdAvgBuyPriceUSD")
+                        .HasColumnType("decimal(20, 8)");
 
                     b.HasKey("ID");
 
@@ -339,13 +356,13 @@ namespace StopWatcher.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<double>("PxBTC");
+                    b.Property<decimal>("PxBTC")
+                        .HasColumnType("decimal(20, 8)");
 
-                    b.Property<double>("PxUSD");
+                    b.Property<decimal?>("PxUSD")
+                        .HasColumnType("decimal(20, 8)");
 
                     b.Property<string>("Ticker");
-
-                    b.Property<string>("TradingPair");
 
                     b.HasKey("ID");
 
@@ -360,13 +377,19 @@ namespace StopWatcher.Migrations
 
                     b.Property<int?>("PositionID");
 
-                    b.Property<double>("StopPercent");
+                    b.Property<decimal>("StopPercent")
+                        .HasColumnType("decimal(20, 8)");
 
-                    b.Property<double>("StopPriceBTC");
+                    b.Property<decimal>("StopPriceBTC")
+                        .HasColumnType("decimal(20, 8)");
 
-                    b.Property<double>("StopPriceUSD");
+                    b.Property<decimal?>("StopPriceUSD")
+                        .HasColumnType("decimal(20, 8)");
 
-                    b.Property<double>("Units");
+                    b.Property<string>("TradingPair");
+
+                    b.Property<decimal>("Units")
+                        .HasColumnType("decimal(20, 8)");
 
                     b.HasKey("ID");
 
@@ -452,19 +475,25 @@ namespace StopWatcher.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<float>("Ask");
+                    b.Property<decimal>("Ask")
+                        .HasColumnType("decimal(20, 8)");
 
-                    b.Property<float>("BaseVolume");
+                    b.Property<decimal>("BaseVolume")
+                        .HasColumnType("decimal(20, 8)");
 
-                    b.Property<float>("Bid");
+                    b.Property<decimal>("Bid")
+                        .HasColumnType("decimal(20, 8)");
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<float>("High");
+                    b.Property<decimal>("High")
+                        .HasColumnType("decimal(20, 8)");
 
-                    b.Property<float>("Last");
+                    b.Property<decimal>("Last")
+                        .HasColumnType("decimal(20, 8)");
 
-                    b.Property<float>("Low");
+                    b.Property<decimal>("Low")
+                        .HasColumnType("decimal(20, 8)");
 
                     b.Property<string>("MarketName");
 
@@ -472,15 +501,17 @@ namespace StopWatcher.Migrations
 
                     b.Property<int>("OpenSellOrders");
 
-                    b.Property<float>("PrevDay");
+                    b.Property<decimal>("PrevDay")
+                        .HasColumnType("decimal(20, 8)");
 
                     b.Property<DateTime>("TimeStamp");
 
-                    b.Property<float>("Volume");
+                    b.Property<decimal>("Volume")
+                        .HasColumnType("decimal(20, 8)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("GetMarketSummaryResult");
+                    b.ToTable("GetMarketSummaryResults");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -575,6 +606,10 @@ namespace StopWatcher.Migrations
 
             modelBuilder.Entity("StopWatcher.Data.MarketData", b =>
                 {
+                    b.HasOne("StopWatcher.Data.Exchange", "Exchange")
+                        .WithMany()
+                        .HasForeignKey("ExchangeID1");
+
                     b.HasOne("StopWatcher.Models.GetMarketSummaryResult", "MarketSummarries")
                         .WithMany()
                         .HasForeignKey("MarketSummarriesID");

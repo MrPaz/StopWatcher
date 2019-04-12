@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using StopWatcher.Data;
 using StopWatcher.Models;
+using StopWatcher.Services;
 
 namespace StopWatcher.Controllers
 {
@@ -14,11 +19,20 @@ namespace StopWatcher.Controllers
     {
         private string _myApiKey;
         private ILogger<HomeController> _logger;
+        private BittrexService _bittrexService;
+        private ApplicationDbContext _context;
+        private IConfiguration _configuration;
+        private UserManager<User> _userManager;
 
-        public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context, IConfiguration configuration,
+            ILogger<HomeController> logger, BittrexService bittrexService, UserManager<User> userManager)
         {
+            _context = context;
+            _configuration = configuration;
             _myApiKey = configuration.GetValue<string>("myApiKey");
             _logger = logger;
+            _bittrexService = bittrexService;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -48,35 +62,25 @@ namespace StopWatcher.Controllers
 
         public async Task<IActionResult> Bittrex()
         {
-            string testSuffix = "/public/getmarketsummaries";
-            string endpoint = "https://api.bittrex.com/api/v1.1" + testSuffix /*_myApiKey*/;
-            //https://api.bittrex.com/api/v1.1/account/getbalances?apikey=API_KEY
-            //https://api.bittrex.com/api/v1.1/market/getopenorders?apikey=API_KEY&market=BTC-LTC
             try
             {
-                System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
-                string response = await httpClient.GetStringAsync(endpoint);
-                //GetMarketSummary typedReponse = Newtonsoft.Json.JsonConvert.DeserializeObject<GetMarketSummary>(response);
-                var typedReponse = Newtonsoft.Json.JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(response);
-                var marketSummaries = typedReponse.GetValue("result").ToArray();
-                var markets = marketSummaries.Select(market => new GetMarketSummaryResult
+                if (this.User.Identity.IsAuthenticated)
                 {
-                    MarketName = market["MarketName"].ToString(),
-                    High = float.Parse(market["High"].ToString()),
-                    Low = float.Parse(market["Low"].ToString()),
-                    Volume = float.Parse(market["Volume"].ToString()),
-                    Last = float.Parse(market["Last"].ToString()),
-                    BaseVolume = float.Parse(market["BaseVolume"].ToString()),
-                    TimeStamp = DateTime.Parse(market["TimeStamp"].ToString()),
-                    Bid = float.Parse(market["Bid"].ToString()),
-                    Ask = float.Parse(market["Ask"].ToString()),
-                    OpenBuyOrders = int.Parse(market["OpenBuyOrders"].ToString()),
-                    OpenSellOrders = int.Parse(market["OpenSellOrders"].ToString()),
-                    PrevDay = float.Parse(market["PrevDay"].ToString()),
-                    Created = DateTime.Parse(market["Created"].ToString())
-                }).ToArray();
-                //now need to get this data into db !!!
-                return Json(markets);
+                    string username = this.User.Identity.Name;
+                    GetCurrenciesResult[] currencies = await _bittrexService.GetCurrencies();
+                    return Json(currencies);
+                }
+                else
+                {
+                    return Forbid();
+                }
+                
+                //GetMarketSummaryResult[] markets = await _bittrexService.GetMarketSummaries();
+                //return Json(markets);
+                //GetBalancesResult[] balances = await _bittrexService.GetBalances("matt@matt.com");
+                //return Json(balances);
+                //GetOpenOrdersResult[] openOrders = await _bittrexService.GetOpenOrders("matt@matt.com");
+                //return Json(openOrders);
             }
             catch (Exception exception)
             {
@@ -85,10 +89,19 @@ namespace StopWatcher.Controllers
             }
         }
 
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel{ RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+        }
+
+        [Authorize]
+        public async  Task<IActionResult> UserBalance()
+        {
+            var balanceResult = await _bittrexService.GetBalances(User.Identity.Name, _configuration.GetValue<string>("Bittrex:Key"), _configuration.GetValue<string>("Bittrex:Secret"));
+            return Json(balanceResult);
+            
         }
     }
 }

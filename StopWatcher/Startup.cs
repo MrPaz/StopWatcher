@@ -52,6 +52,8 @@ namespace StopWatcher
                 return new FluentEmail.Mailgun.MailgunSender(Configuration.GetValue<string>("MailGun:Domain"), Configuration.GetValue<string>("MailGun:Key"));
             });
 
+            
+
             services.AddTransient<SendGrid.ISendGridClient>((s) =>
             {
                 return new SendGrid.SendGridClient(Configuration.GetValue<string>("SendGrid:Key"));
@@ -76,8 +78,16 @@ namespace StopWatcher
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
+           
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddTransient<Bittrex.Net.Interfaces.IBittrexClient>((s) => new Bittrex.Net.BittrexClient());
+
+            services.AddTransient((s) =>
+            {
+                return new Services.BittrexService(s.GetService<ApplicationDbContext>());
+            });
 
             services.AddDefaultIdentity<Data.User>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();  

@@ -31,62 +31,8 @@ namespace StopWatcher.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Bittrex()
-        {
-            string testSuffix = "/public/getmarketsummaries";
-            string endpoint = "https://api.bittrex.com/api/v1.1" + testSuffix /*_myApiKey*/;
-            //https://api.bittrex.com/api/v1.1/account/getbalances?apikey=API_KEY
-            //https://api.bittrex.com/api/v1.1/market/getopenorders?apikey=API_KEY&market=BTC-LTC
-            try
-            {
-                System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
-                string response = await httpClient.GetStringAsync(endpoint);
-                //GetMarketSummary typedReponse = Newtonsoft.Json.JsonConvert.DeserializeObject<GetMarketSummary>(response);
-                var typedReponse = Newtonsoft.Json.JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(response);
-                var marketSummaries = typedReponse.GetValue("result").ToArray();
-                var markets = marketSummaries.Select(market => new GetMarketSummaryResult
-                {
-                    MarketName = market["MarketName"].ToString(),
-                    High = float.Parse(market["High"].ToString()),
-                    Low = float.Parse(market["Low"].ToString()),
-                    Volume = float.Parse(market["Volume"].ToString()),
-                    Last = float.Parse(market["Last"].ToString()),
-                    BaseVolume = float.Parse(market["BaseVolume"].ToString()),
-                    TimeStamp = DateTime.Parse(market["TimeStamp"].ToString()),
-                    Bid = float.Parse(market["Bid"].ToString()),
-                    Ask = float.Parse(market["Ask"].ToString()),
-                    OpenBuyOrders = int.Parse(market["OpenBuyOrders"].ToString()),
-                    OpenSellOrders = int.Parse(market["OpenSellOrders"].ToString()),
-                    PrevDay = float.Parse(market["PrevDay"].ToString()),
-                    Created = DateTime.Parse(market["Created"].ToString())
-                }).ToArray();
-
-                foreach (var market in markets)
-                {
-                    MarketData marketData = _context.MarketDatas.FirstOrDefault(x => x.MarketSummarries.MarketName == market.MarketName);
-                    if(marketData == null)
-                    {
-                        marketData = new MarketData
-                        {
-                            MarketSummarries = market
-                        };
-                    }
-                    else
-                    {
-                        marketData.MarketSummarries = market;
-                    }
-                }
-                return Json(markets);
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, exception.Message);
-                return Content("We can't access the service right now!");
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Index(int positionid, int exchangeid, string tickerid, double stoploss, double unitsid)
+        public async Task<IActionResult> Index(int positionid, int exchangeid, 
+            string tickerid, decimal stoploss, decimal unitsid)
         {
             User user = await _userManager.GetUserAsync(User);
             Position position = _context.Positions.First(x => x.ID == positionid);
@@ -95,11 +41,14 @@ namespace StopWatcher.Controllers
 
             if(stopOrder == null)
             {
-                Position existingPosition = _context.Positions.Include(x => x.Security).Include(x => x.StopOrders).FirstOrDefault(x => x.UserID == user.Id &&
-                x.ID == position.ID);
+                Position existingPosition = _context.Positions
+                    .Include(x => x.Security)
+                    .Include(x => x.StopOrders)
+                    .FirstOrDefault(x => x.UserID == user.Id && x.ID == position.ID);
                 if (existingPosition == null)
                 {
-                    throw new ApplicationException(string.Format("User {0} doesn't have position {1}", user.Id, position.ID));
+                    throw new ApplicationException(string.Format("User {0} doesn't have position {1}",
+                        user.Id, position.ID));
                 }
                 existingPosition.IsStop = true;
                 stopOrder = new StopOrder
@@ -111,8 +60,10 @@ namespace StopWatcher.Controllers
                 position.StopOrders.Add(stopOrder);
             }
 
-            stopOrder.StopPriceBTC = position.Security.Ticker == "BTC" ? 1.00 : position.Security.PxBTC * (1 - stoploss / 100);
-            stopOrder.StopPriceUSD = position.Security.PxUSD * (1 - stoploss / 100);
+            stopOrder.StopPriceBTC = position.Security.Ticker == "BTC" ? 
+                (decimal)1.00 : position.Security.PxBTC * (1 - stoploss / (decimal)100);
+            stopOrder.StopPriceUSD = position.Security.PxUSD * (1 - (stoploss / 100));
+
             stopOrder.StopPercent = stoploss;
             await _context.SaveChangesAsync();
             //Security security = _context
@@ -138,7 +89,9 @@ namespace StopWatcher.Controllers
             }
 
             Data.User user = _userManager.FindByNameAsync(User.Identity.Name).Result;
-            ViewData["securities"] = _context.Securities.Include(s => s.ExchangeSecurities).ThenInclude(es => es.Exchange).ToArray();
+            ViewData["securities"] = _context.Securities
+                .Include(s => s.ExchangeSecurities)
+                .ThenInclude(es => es.Exchange).ToArray();
 
             //Instead of returning mock category data, return the DbContext's Categories property
             return View(_context

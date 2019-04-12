@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StopWatcher", "StopWatcher\StopWatcher.csproj", "{A4BBED04-D089-49F1-80D2-D34E22D0B657}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceUpdater", "PriceUpdater\PriceUpdater.csproj", "{A2500596-B694-4D5E-9E70-CB36EA887FBA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A4BBED04-D089-49F1-80D2-D34E22D0B657}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4BBED04-D089-49F1-80D2-D34E22D0B657}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4BBED04-D089-49F1-80D2-D34E22D0B657}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2500596-B694-4D5E-9E70-CB36EA887FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2500596-B694-4D5E-9E70-CB36EA887FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2500596-B694-4D5E-9E70-CB36EA887FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2500596-B694-4D5E-9E70-CB36EA887FBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
