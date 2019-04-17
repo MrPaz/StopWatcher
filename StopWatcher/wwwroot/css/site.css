@@ -72,6 +72,13 @@
     padding: 5%;
 }
 
+.identity-container {
+    margin-left: auto;
+    margin-right: auto;
+    height: 81.5vh;
+    /*padding: 1rem;*/
+}
+
 @media only screen and (max-width: 1000px) {
     body {
         background-position: top right;

@@ -3,11 +3,14 @@
 @{
     ViewData["Title"] = "ManagePositions";
     StopWatcher.Data.Security[] securities = ViewData["securities"] as StopWatcher.Data.Security[];
+    decimal? btcPx = securities.FirstOrDefault(x => x.Ticker == "BTC").PxUSD;  
+    string btcPxBtc = "1.00000000";
+
 
 }
 
 <body class="alt-bg img">
-    <div style="padding: 1rem;" class="alt-container">
+    <div style="padding: 1rem;" class="@*alt-container*@">
         <div style="vertical-align: middle;">
             <h2 class="font">Manage Positions</h2>
             <table class="table table-striped table-dark">
@@ -16,8 +19,8 @@
                         <th scope="col">Ticker</th>
                         <th scope="col">Name</th>
                         <th style="text-align: right;" scope="col">Units</th>
-                        <th style="text-align: right;" scope="col">Avg Buy Price (USD)</th>
-                        <th style="text-align: right;" scope="col">Avg Buy Price (BTC)</th>
+                        <th style="text-align: right;" scope="col">Price (USD)</th>
+                        <th style="text-align: right;" scope="col">Price (BTC)</th>
                         <th scope="col">StopWatcher?</th>
                         <th scope="col"></th>
                     </tr>
@@ -28,18 +31,25 @@
                         <tr>
                             <th scope="row">@position.Security.Ticker</th>
                             <td>@position.Security.Name</td>
-                            <td style="text-align: right;">@position.Units.ToString("0.00000000")</td>
-                            <td style="text-align: right;">$ @position.WtdAvgBuyPriceUSD.ToString("0.00")</td>
-                            <td style="text-align: right;">&#8383 @position.WtdAvgBuyPriceBTC.ToString("0.00000000")</td>
+                            <td style="text-align: right;">@String.Format("{0:#,##0.#######0}", position.Units)</td>
+                            <td style="text-align: right;">
+                                $ @(String.Format("{0:#,##0.#######0}", (position.Security.Ticker == "BTC" ?
+                                    (decimal)btcPx :
+                                    (position.Security.PxBTC * (decimal)btcPx)))
+                            )</td>
+                            <td style="text-align: right;">&#8383 @(position.Security.Ticker == "BTC" ? 
+                                btcPxBtc : (position.Security.PxBTC).ToString("0.00000000"))</td>
+
                             <td style="text-align: center;">@(position.IsStop == false ? "N" : "Y")</td>
                             <td>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" 
+                                <button type="button" class="btn btn-primary" data-toggle="modal" 
+                                        data-target="#exampleModalCenter"
                                         data-position-id="@position.ID"
                                         data-position-exchange="@position.ExchangeID"
                                         data-position-exchange-name="@position.Exchange.Name"
                                         data-security-ticker="@position.Security.Ticker"
                                         data-position-units="@position.Units"
-                                        data-position-stoploss="@position.IsStop"   
+                                        data-position-stoploss="@position.IsStop"
                                         onclick="setModalData(event, this) ">
                                     View/Edit Stop
                                 </button>

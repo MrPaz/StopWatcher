@@ -77,8 +77,7 @@ namespace StopWatcher
                 );
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-           
+            services.AddDbContext<ApplicationDbContext>(options =>           
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 

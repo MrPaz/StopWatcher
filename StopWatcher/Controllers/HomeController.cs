@@ -67,16 +67,16 @@ namespace StopWatcher.Controllers
                 if (this.User.Identity.IsAuthenticated)
                 {
                     string username = this.User.Identity.Name;
-                    GetCurrenciesResult[] currencies = await _bittrexService.GetCurrencies();
-                    return Json(currencies);
+                    //GetCurrenciesResult[] currencies = await _bittrexService.GetCurrencies();
+                    //return Json(currencies);
                 }
                 else
                 {
                     return Forbid();
                 }
-                
-                //GetMarketSummaryResult[] markets = await _bittrexService.GetMarketSummaries();
-                //return Json(markets);
+
+                GetMarketSummaryResult[] markets = await _bittrexService.GetMarketSummaries();
+                return Json(markets);
                 //GetBalancesResult[] balances = await _bittrexService.GetBalances("matt@matt.com");
                 //return Json(balances);
                 //GetOpenOrdersResult[] openOrders = await _bittrexService.GetOpenOrders("matt@matt.com");
