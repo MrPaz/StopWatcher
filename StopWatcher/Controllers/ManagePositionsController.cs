@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using StopWatcher.Data;
 using StopWatcher.Models;
+using StopWatcher.Services;
 
 namespace StopWatcher.Controllers
 {
@@ -20,14 +21,16 @@ namespace StopWatcher.Controllers
         private UserManager<User> _userManager;
         private readonly string _myApiKey;
         private ILogger<ManagePositionsController> _logger;
+        private BittrexService _bittrexService;
 
         public ManagePositionsController(ApplicationDbContext context, UserManager<User> userManager, 
-            IConfiguration configuration, ILogger<ManagePositionsController> logger)
+            IConfiguration configuration, ILogger<ManagePositionsController> logger, BittrexService bittrexService)
         {
-            this._context = context;
-            this._userManager = userManager;
+            _context = context;
+            _userManager = userManager;
             _myApiKey = configuration.GetValue<string>("myApiKey");
             _logger = logger;
+            _bittrexService = bittrexService;
         }
 
         [HttpPost]
@@ -77,15 +80,19 @@ namespace StopWatcher.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //If my database's positions table is empty, add mock data here:
-            if (!_context.Positions.Any())
+            if (_context.Positions.Any())
             {
                 //_context.Exchanges.AddRange(MockExchangeData.exchanges);
                 //_context.Securities.AddRange(MockSecurityData.securities);
-                _context.Positions.AddRange(MockPositionData.positions);
-                _context.SaveChanges();
+                //_context.Positions.AddRange(MockPositionData.positions);
+                //_context.SaveChanges();
+                GetMarketSummaryResult[] markets = await _bittrexService.GetMarketSummaries();
+                //GetBalancesResult[] balances = await _bittrexService.GetBalances(this.User);
+                //GetOpenOrdersResult[] openOrders = await _bittrexService.GetOpenOrders("matt@matt.com");
+                //_context.SaveChanges();
             }
 
             Data.User user = _userManager.FindByNameAsync(User.Identity.Name).Result;
